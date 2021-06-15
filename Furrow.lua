@@ -7,7 +7,7 @@ _addon.commands = {'furrow'}
 require('logger')
 require('coroutine')
 
-notice('Please note that Furrow requires all three Garden Furrows to be unlocked for proper operation. Refer to the readme for more information.')
+notice('Furrow can detect how many Furrows you have. Refer to the readme for more information.')
 
 running = false
 Furrows_unlocked = 1
