@@ -5,7 +5,7 @@ Furrow is a Windower 4 addon specifically designed to automate planting and harv
 
 Additionally, Furrow was written for my personal use and I have since capped my Mog Garden ranks; as such, do not expect any updates, support, or other assistance from the author.
 
-FURROW ASSUMES YOU HAVE ALL THREE FURROWS UNLOCKED (Rank 5). The addon could be modified to be used with less, or to be able to specificy how many furrows you have unlocked, but I lack the inclination.
+Furrow was edited to detect how many furrows you have by reading your KI.
 
 Furrow does not use packets. It relies on send commands. Thus, any other actions while Furrow is running may interfere with the addon. A reminder on grow times is used in case you leave the Mog Garden mid cycle.
 
