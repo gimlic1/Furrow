@@ -10,6 +10,7 @@ require('coroutine')
 notice('Please note that Furrow requires all three Garden Furrows to be unlocked for proper operation. Refer to the readme for more information.')
 
 running = false
+Furrows_unlocked = 1
 
 function loop()
 	if running == true then
@@ -153,21 +154,26 @@ end
 
 function harvestcycle()
 	if running == true then
+		Check_KI()
 		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
 		target1()
 		coroutine.sleep(2)
 		harvest()
 		coroutine.sleep(2)
-		windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
-		target2()
-		coroutine.sleep(2)
-		harvest()
-		coroutine.sleep(2)
-		windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
-		target3()
-		coroutine.sleep(2)
-		harvest()
-		coroutine.sleep(2)
+		if Furrows_unlocked >= 2 then
+			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
+			target2()
+			coroutine.sleep(2)
+			harvest()
+			coroutine.sleep(2)
+		end
+		if Furrows_unlocked >= 3 then
+			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
+			target3()
+			coroutine.sleep(2)
+			harvest()
+			coroutine.sleep(2)
+		end
 		running = false
 		windower.add_to_chat(200, 'Furrow: Harvesting Complete!')
 	else
@@ -177,21 +183,26 @@ end
 
 function plantcycle()
 	if running == true then
+		Check_KI()
 		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
 		target1()
 		coroutine.sleep(2)
 		plant()
 		coroutine.sleep(2)
-		windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
-		target2()
-		coroutine.sleep(2)
-		plant()
-		coroutine.sleep(2)
-		windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
-		target3()
-		coroutine.sleep(2)
-		plant()
-		coroutine.sleep(2)
+		if Furrows_unlocked >= 2 then
+			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
+			target2()
+			coroutine.sleep(2)
+			plant()
+			coroutine.sleep(2)
+		end
+		if Furrows_unlocked >= 3 then
+			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
+			target3()
+			coroutine.sleep(2)
+			plant()
+			coroutine.sleep(2)
+		end
 		running = false
 		windower.add_to_chat(200, 'Furrow: Planting Complete!')
 	else
@@ -238,8 +249,24 @@ function furrow_command(...)
 		windower.send_command('lua reload furrow')
 	elseif #arg == 1 and arg[ 1 ]:lower() == 'help' then
         windower.add_to_chat(200, 'Furrow commands: start stop abort plant harvest. See readme for additional information.')
+	elseif #arg == 1 and arg[ 1 ]:lower() == 'ki' then
+        windower.add_to_chat(200, 'Checking Key Items')
+		Check_KI()
 	else
 		end
+end
+function Check_KI()
+ local key_items = windower.ffxi.get_key_items()
+    Furrows_unlocked = 1
+	for k, v in ipairs(key_items) do
+        if v == 2413  then
+            print("2nd Furrow")
+			Furrows_unlocked = 2
+        elseif v == 2415 then
+            print("3rd Furrow")
+			Furrows_unlocked = 3
+        end
+    end
 end
 
 windower.register_event('addon command', furrow_command)
