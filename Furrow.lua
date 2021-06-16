@@ -1,6 +1,6 @@
 _addon.name = 'Furrow'
 _addon.author = 'Algar'
-_addon.version = '1.0'
+_addon.version = '1.1'
 _addon.language = 'english'
 _addon.commands = {'furrow'}
 
@@ -16,7 +16,7 @@ function loop()
 	if running == true then
 		windower.add_to_chat(200, 'Furrow: Starting the planting cycle.')
 		plantcycle()
-		coroutine.sleep (2)
+		coroutine.sleep (.1)
 		running = true
 		windower.add_to_chat(200, 'Furrow: Sleeping for an hour before the harvest.')
 		coroutine.sleep (600)
@@ -32,10 +32,10 @@ function loop()
 		coroutine.sleep (600)
 		windower.add_to_chat(200, 'Furrow: Starting the harvesting cycle.')
 		harvestcycle()
-		coroutine.sleep (2)
+		coroutine.sleep (.1)
 		windower.add_to_chat(200, 'Furrow: Cycle complete! Restarting the loop shortly...')
 		running = true
-		coroutine.sleep(5)
+		coroutine.sleep(.1)
 		loop()
 	else
 		windower.add_to_chat(200, 'Something went wrong! Please try your command again after reloading Furrow.')
@@ -44,60 +44,60 @@ end
 
 function target1()
 	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.5)
+    coroutine.sleep(0.1)
     windower.send_command('setkey TAB up')
-    coroutine.sleep(0.5)
+    coroutine.sleep(0.1)
 		
 		player = windower.ffxi.get_player()
 		
 		if windower.ffxi.get_mob_by_target( 't' ) == nil then
             windower.add_to_chat(200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (0.5)
+			coroutine.sleep (0.1)
 			target1()
 		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow" then
 			windower.add_to_chat(200, 'Furrow: Found the first furrow.')
         else
-            coroutine.sleep(0.5)
+            coroutine.sleep(0.1)
 			target1()
 		end
 end	
 	
 function target2()
 	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.5)
+    coroutine.sleep(0.1)
     windower.send_command('setkey TAB up')
-    coroutine.sleep(0.5)
+    coroutine.sleep(0.1)
 		
 		player = windower.ffxi.get_player()
 		
 		if windower.ffxi.get_mob_by_target( 't' ) == nil then
             windower.add_to_chat(200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (0.5)
+			coroutine.sleep (0.1)
 			target2()
 		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow #2" then
 			windower.add_to_chat(200, 'Furrow: Found the second furrow.')
         else
-            coroutine.sleep(0.5)
+            coroutine.sleep(0.1)
 			target2()
 		end
 end	
 
 function target3()
 	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.5)
+    coroutine.sleep(0.1)
     windower.send_command('setkey TAB up')
-    coroutine.sleep(0.5)
+    coroutine.sleep(0.1)
 		
 		player = windower.ffxi.get_player()
 		
 		if windower.ffxi.get_mob_by_target( 't' ) == nil then
             windower.add_to_chat( 200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (0.5)
+			coroutine.sleep (0.1)
 			target3()
 		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow #3" then
 			windower.add_to_chat(200, 'Furrow: Found the third furrow.')
         else
-            coroutine.sleep(0.5)
+            coroutine.sleep(0.1)
 			target3()
 		end
 end	
@@ -157,22 +157,22 @@ function harvestcycle()
 		Check_KI()
 		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
 		target1()
-		coroutine.sleep(2)
+		coroutine.sleep(.1)
 		harvest()
-		coroutine.sleep(2)
+		coroutine.sleep(.1)
 		if Furrows_unlocked >= 2 then
 			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
 			target2()
-			coroutine.sleep(2)
+			coroutine.sleep(.1)
 			harvest()
-			coroutine.sleep(2)
+			coroutine.sleep(.1)
 		end
 		if Furrows_unlocked >= 3 then
 			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
 			target3()
-			coroutine.sleep(2)
+			coroutine.sleep(.1)
 			harvest()
-			coroutine.sleep(2)
+			coroutine.sleep(.1)
 		end
 		running = false
 		windower.add_to_chat(200, 'Furrow: Harvesting Complete!')
@@ -186,22 +186,22 @@ function plantcycle()
 		Check_KI()
 		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
 		target1()
-		coroutine.sleep(2)
+		coroutine.sleep(.1)
 		plant()
-		coroutine.sleep(2)
+		coroutine.sleep(.1)
 		if Furrows_unlocked >= 2 then
 			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
 			target2()
-			coroutine.sleep(2)
+			coroutine.sleep(.1)
 			plant()
-			coroutine.sleep(2)
+			coroutine.sleep(.1)
 		end
 		if Furrows_unlocked >= 3 then
 			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
 			target3()
-			coroutine.sleep(2)
+			coroutine.sleep(.1)
 			plant()
-			coroutine.sleep(2)
+			coroutine.sleep(.1)
 		end
 		running = false
 		windower.add_to_chat(200, 'Furrow: Planting Complete!')
