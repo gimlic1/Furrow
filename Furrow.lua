@@ -1,6 +1,6 @@
 _addon.name = 'Furrow'
 _addon.author = 'Algar'
-_addon.version = '1.1'
+_addon.version = '1.2'
 _addon.language = 'english'
 _addon.commands = {'furrow'}
 
@@ -105,21 +105,21 @@ end
 function plant()
 		windower.add_to_chat(200, 'Furrow: Planting a revival root.')
 		windower.chat.input("/item \"Revival Root\" <t>")
-		coroutine.sleep(5)
+		coroutine.sleep(2.5)
 		windower.send_command('setkey enter down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(2)
+		coroutine.sleep(1)
 		windower.send_command('setkey enter down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(2)
+		coroutine.sleep(1)
 		windower.send_command('setkey enter down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(5)
+		coroutine.sleep(2.5)
 		windower.send_command('setkey escape down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey escape up')
 		coroutine.sleep(0.5)
 end			
@@ -127,27 +127,27 @@ end
 function harvest()
 		windower.add_to_chat(200, 'Furrow: Harvesting this furrow.')
 		windower.send_command('setkey enter down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(5)
+		coroutine.sleep(2.5)
 		windower.send_command('setkey enter down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(2)
+		coroutine.sleep(1)
 		windower.send_command('setkey enter down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(2)
+		coroutine.sleep(1)
 		windower.send_command('setkey enter down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(2)
+		coroutine.sleep(1)
 		windower.send_command('setkey enter down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(5)
+		coroutine.sleep(2.5)
 		windower.send_command('setkey escape down')
-		coroutine.sleep(0.5)
+		coroutine.sleep(0.1)
 		windower.send_command('setkey escape up')
 		coroutine.sleep(0.5)
 end
@@ -260,10 +260,10 @@ function Check_KI()
     Furrows_unlocked = 1
 	for k, v in ipairs(key_items) do
         if v == 2413  then
-            print("2nd Furrow")
+            --print("2nd Furrow")
 			Furrows_unlocked = 2
         elseif v == 2415 then
-            print("3rd Furrow")
+            --print("3rd Furrow")
 			Furrows_unlocked = 3
         end
     end
