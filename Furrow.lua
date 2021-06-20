@@ -1,6 +1,6 @@
 _addon.name = 'Furrow'
 _addon.author = 'Algar'
-_addon.version = '1.2'
+_addon.version = '1.3'
 _addon.language = 'english'
 _addon.commands = {'furrow'}
 
@@ -44,7 +44,7 @@ end
 
 function target1()
 	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.1)
+    coroutine.sleep(0.01)
     windower.send_command('setkey TAB up')
     coroutine.sleep(0.1)
 		
@@ -64,7 +64,7 @@ end
 	
 function target2()
 	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.1)
+    coroutine.sleep(0.01)
     windower.send_command('setkey TAB up')
     coroutine.sleep(0.1)
 		
@@ -84,7 +84,7 @@ end
 
 function target3()
 	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.1)
+    coroutine.sleep(0.01)
     windower.send_command('setkey TAB up')
     coroutine.sleep(0.1)
 		
@@ -109,15 +109,15 @@ function plant()
 		windower.send_command('setkey enter down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(1)
+		coroutine.sleep(1.5)
 		windower.send_command('setkey enter down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(1)
+		coroutine.sleep(1.5)
 		windower.send_command('setkey enter down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(2.5)
+		coroutine.sleep(4)
 		windower.send_command('setkey escape down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey escape up')
@@ -129,23 +129,23 @@ function harvest()
 		windower.send_command('setkey enter down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(2.5)
+		coroutine.sleep(5)
 		windower.send_command('setkey enter down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(1)
+		coroutine.sleep(2)
 		windower.send_command('setkey enter down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(1)
+		coroutine.sleep(2)
 		windower.send_command('setkey enter down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(1)
+		coroutine.sleep(2)
 		windower.send_command('setkey enter down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey enter up')
-		coroutine.sleep(2.5)
+		coroutine.sleep(4)
 		windower.send_command('setkey escape down')
 		coroutine.sleep(0.1)
 		windower.send_command('setkey escape up')
