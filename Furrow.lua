@@ -15,10 +15,11 @@ Furrows_unlocked = 1
 function loop()
 	if running == true then
 		windower.add_to_chat(200, 'Furrow: Starting the planting cycle.')
-		plantcycle()
+		plantcycle(true) -- [2026-11-22 Fix] Was: plantcycle() (cleared running = false prematurely inside loop)
+		if not running then return end
 		coroutine.sleep (.1)
-		Sell_junk()
-		running = true
+		Sell_junk(true) -- [2026-11-22 Fix] Was: Sell_junk(); running = true
+		if not running then return end
 		windower.add_to_chat(200, 'Furrow: Sleeping for an hour before the harvest.')
 		coroutine.sleep (600)
 		windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in fifty minutes. Use //furrow abort to cancel.')
@@ -32,10 +33,10 @@ function loop()
 		windower.add_to_chat(200, 'Reminder: Furrow will commence harvest in ten minutes. Use //furrow abort to cancel.')
 		coroutine.sleep (600)
 		windower.add_to_chat(200, 'Furrow: Starting the harvesting cycle.')
-		harvestcycle()
+		harvestcycle(true) -- [2026-11-22 Fix] Was: harvestcycle() (cleared running = false prematurely inside loop)
+		if not running then return end
 		coroutine.sleep (.1)
 		windower.add_to_chat(200, 'Furrow: Cycle complete! Restarting the loop shortly...')
-		running = true
 		coroutine.sleep(.1)
 		loop()
 	else
@@ -43,76 +44,57 @@ function loop()
 		end
 end
 
-function target1()
-	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.01)
-    windower.send_command('setkey TAB up')
-    coroutine.sleep(0.1)
-		
+-- [2026-11-22 Fix] Was: unbounded recursive target1()..target4() with no < 6 yalms distance check.
+-- Converted to bounded while running do loops (max 50 attempts) enforcing Fair-Play < 6 yalms distance.
+local function target_furrow_obj(expected_name, found_msg)
+	local attempts = 0
+	while running and attempts < 50 do
+		attempts = attempts + 1
+		windower.send_command('setkey TAB down')
+		coroutine.sleep(0.01)
+		windower.send_command('setkey TAB up')
+		coroutine.sleep(0.1)
+
 		player = windower.ffxi.get_player()
-		
-		if windower.ffxi.get_mob_by_target( 't' ) == nil then
-            windower.add_to_chat(200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (5)
+		local mob = windower.ffxi.get_mob_by_target('t')
+
+		if mob == nil then
+			windower.add_to_chat(200, 'Furrow: No target, cycling.')
+			coroutine.sleep(5)
 			windower.send_command('setkey escape down')
 			coroutine.sleep(0.3)
 			windower.send_command('setkey escape up')
 			coroutine.sleep(0.1)
-			target1()
-		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow" then
-			windower.add_to_chat(200, 'Furrow: Found the first furrow.')
-        else
-            coroutine.sleep(0.1)
-			target1()
+		elseif mob.name == expected_name then
+			if mob.distance and math.sqrt(mob.distance) < 6 then
+				windower.add_to_chat(200, found_msg)
+				return true
+			else
+				windower.add_to_chat(167, 'Furrow: Found ' .. expected_name .. ' but out of range (>= 6 yalms). Please move within 6 yalms.')
+				running = false
+				return false
+			end
+		else
+			coroutine.sleep(0.1)
 		end
+	end
+	if running then
+		windower.add_to_chat(167, 'Furrow: Could not find ' .. expected_name .. ' within 50 attempts; stopping.')
+		running = false
+	end
+	return false
+end
+
+function target1()
+	return target_furrow_obj("Garden Furrow", 'Furrow: Found the first furrow.')
 end	
 	
 function target2()
-	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.01)
-    windower.send_command('setkey TAB up')
-    coroutine.sleep(0.1)
-		
-		player = windower.ffxi.get_player()
-		
-		if windower.ffxi.get_mob_by_target( 't' ) == nil then
-            windower.add_to_chat(200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (5)
-			windower.send_command('setkey escape down')
-			coroutine.sleep(0.3)
-			windower.send_command('setkey escape up')
-			coroutine.sleep(0.1)
-			target2()
-		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow #2" then
-			windower.add_to_chat(200, 'Furrow: Found the second furrow.')
-        else
-            coroutine.sleep(0.1)
-			target2()
-		end
+	return target_furrow_obj("Garden Furrow #2", 'Furrow: Found the second furrow.')
 end	
 
 function target3()
-	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.01)
-    windower.send_command('setkey TAB up')
-    coroutine.sleep(0.1)
-		
-		player = windower.ffxi.get_player()
-		
-		if windower.ffxi.get_mob_by_target( 't' ) == nil then
-            windower.add_to_chat( 200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (5)
-			windower.send_command('setkey escape down')
-			coroutine.sleep(0.3)
-			windower.send_command('setkey escape up')
-			coroutine.sleep(0.1)
-			target3()
-		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow #3" then
-			windower.add_to_chat(200, 'Furrow: Found the third furrow.')
-        else
-            coroutine.sleep(0.1)
-			target3()
-		end
+	return target_furrow_obj("Garden Furrow #3", 'Furrow: Found the third furrow.')
 end	
 
 function plant()
@@ -165,58 +147,58 @@ function harvest()
 		coroutine.sleep(0.5)
 end
 
-function harvestcycle()
+function harvestcycle(keep_running) -- [2026-11-22 Fix] Was: function harvestcycle() that unconditionally set running = false
 	if running == true then
 		Check_KI()
 		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
-		target1()
+		if not target1() then return end
 		coroutine.sleep(.1)
 		harvest()
 		coroutine.sleep(.1)
 		if Furrows_unlocked >= 2 then
 			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
-			target2()
+			if not target2() then return end
 			coroutine.sleep(.1)
 			harvest()
 			coroutine.sleep(.1)
 		end
 		if Furrows_unlocked >= 3 then
 			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
-			target3()
+			if not target3() then return end
 			coroutine.sleep(.1)
 			harvest()
 			coroutine.sleep(.1)
 		end
-		running = false
+		if not keep_running then running = false end -- [2026-11-22 Fix] Was: running = false
 		windower.add_to_chat(200, 'Furrow: Harvesting Complete!')
 	else
 		windower.add_to_chat(200, 'Furrow: Something went wrong! Please try your command again after reloading Furrow.')
 		end
 end
 
-function plantcycle()
+function plantcycle(keep_running) -- [2026-11-22 Fix] Was: function plantcycle() that unconditionally set running = false
 	if running == true then
 		Check_KI()
 		windower.add_to_chat(200, 'Furrow: Searching for the first furrow.')
-		target1()
+		if not target1() then return end
 		coroutine.sleep(.1)
 		plant()
 		coroutine.sleep(.1)
 		if Furrows_unlocked >= 2 then
 			windower.add_to_chat(200, 'Furrow: Searching for the second furrow.')
-			target2()
+			if not target2() then return end
 			coroutine.sleep(.1)
 			plant()
 			coroutine.sleep(.1)
 		end
 		if Furrows_unlocked >= 3 then
 			windower.add_to_chat(200, 'Furrow: Searching for the third furrow.')
-			target3()
+			if not target3() then return end
 			coroutine.sleep(.1)
 			plant()
 			coroutine.sleep(.1)
 		end
-		running = false
+		if not keep_running then running = false end -- [2026-11-22 Fix] Was: running = false
 		windower.add_to_chat(200, 'Furrow: Planting Complete!')
 	else
 		windower.add_to_chat(200, 'Furrow: Something went wrong! Please try your command again after reloading Furrow.')
@@ -292,31 +274,12 @@ end
 
 
 function target4()
-	windower.send_command('setkey TAB down')
-    coroutine.sleep(0.1)
-    windower.send_command('setkey TAB up')
-    coroutine.sleep(0.1)
-		
-		player = windower.ffxi.get_player()
-		
-		if windower.ffxi.get_mob_by_target( 't' ) == nil then
-            windower.add_to_chat( 200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (5)
-			windower.send_command('setkey escape down')
-			coroutine.sleep(0.3)
-			windower.send_command('setkey escape up')
-			coroutine.sleep(0.1)
-			target4()
-		elseif windower.ffxi.get_mob_by_target('t').name == "Green Thumb Moogle" then
-			windower.add_to_chat(200, 'Furrow: Found Moogle')
-        else
-            coroutine.sleep(0.1)
-			target4()
-		end
+	-- [2026-11-22 Fix] Was: unbounded recursive target4() with no < 6 yalms distance check
+	return target_furrow_obj("Green Thumb Moogle", 'Furrow: Found Moogle')
 end	
 
-function Sell_junk()
-	target4()
+function Sell_junk(keep_running) -- [2026-11-22 Fix] Was: function Sell_junk() that unconditionally set running = false twice
+	if not target4() then return end
 	windower.chat.input('//sellnpc junk')
 	coroutine.sleep(2)
 	
@@ -348,11 +311,7 @@ function Sell_junk()
 	windower.send_command('setkey escape down')
 	coroutine.sleep(0.3)
 	windower.send_command('setkey escape up')
-	running = false
-	
-	running = false
-	
-	
+	if not keep_running then running = false end -- [2026-11-22 Fix] Was: running = false (twice)
 end
 
 
