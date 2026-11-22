@@ -17,6 +17,7 @@ function loop()
 		windower.add_to_chat(200, 'Furrow: Starting the planting cycle.')
 		plantcycle()
 		coroutine.sleep (.1)
+		Sell_junk()
 		running = true
 		windower.add_to_chat(200, 'Furrow: Sleeping for an hour before the harvest.')
 		coroutine.sleep (600)
@@ -52,7 +53,11 @@ function target1()
 		
 		if windower.ffxi.get_mob_by_target( 't' ) == nil then
             windower.add_to_chat(200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (0.1)
+			coroutine.sleep (5)
+			windower.send_command('setkey escape down')
+			coroutine.sleep(0.3)
+			windower.send_command('setkey escape up')
+			coroutine.sleep(0.1)
 			target1()
 		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow" then
 			windower.add_to_chat(200, 'Furrow: Found the first furrow.')
@@ -72,7 +77,11 @@ function target2()
 		
 		if windower.ffxi.get_mob_by_target( 't' ) == nil then
             windower.add_to_chat(200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (0.1)
+			coroutine.sleep (5)
+			windower.send_command('setkey escape down')
+			coroutine.sleep(0.3)
+			windower.send_command('setkey escape up')
+			coroutine.sleep(0.1)
 			target2()
 		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow #2" then
 			windower.add_to_chat(200, 'Furrow: Found the second furrow.')
@@ -92,7 +101,11 @@ function target3()
 		
 		if windower.ffxi.get_mob_by_target( 't' ) == nil then
             windower.add_to_chat( 200, 'Furrow: No target, cycling.' )
-			coroutine.sleep (0.1)
+			coroutine.sleep (5)
+			windower.send_command('setkey escape down')
+			coroutine.sleep(0.3)
+			windower.send_command('setkey escape up')
+			coroutine.sleep(0.1)
 			target3()
 		elseif windower.ffxi.get_mob_by_target('t').name == "Garden Furrow #3" then
 			windower.add_to_chat(200, 'Furrow: Found the third furrow.')
@@ -252,6 +265,14 @@ function furrow_command(...)
 	elseif #arg == 1 and arg[ 1 ]:lower() == 'ki' then
         windower.add_to_chat(200, 'Checking Key Items')
 		Check_KI()
+	elseif #arg == 1 and arg[ 1 ]:lower() == 'sell' then
+        if running == false then
+			running = true
+			windower.add_to_chat(200, 'Selling')
+			Sell_junk()
+		elseif running == true then
+            windower.add_to_chat(200, 'It appears Furrow is already running an action, please use //furrow abort to reload the addon and try again.')
+        end
 	else
 		end
 end
@@ -268,5 +289,71 @@ function Check_KI()
         end
     end
 end
+
+
+function target4()
+	windower.send_command('setkey TAB down')
+    coroutine.sleep(0.1)
+    windower.send_command('setkey TAB up')
+    coroutine.sleep(0.1)
+		
+		player = windower.ffxi.get_player()
+		
+		if windower.ffxi.get_mob_by_target( 't' ) == nil then
+            windower.add_to_chat( 200, 'Furrow: No target, cycling.' )
+			coroutine.sleep (5)
+			windower.send_command('setkey escape down')
+			coroutine.sleep(0.3)
+			windower.send_command('setkey escape up')
+			coroutine.sleep(0.1)
+			target4()
+		elseif windower.ffxi.get_mob_by_target('t').name == "Green Thumb Moogle" then
+			windower.add_to_chat(200, 'Furrow: Found Moogle')
+        else
+            coroutine.sleep(0.1)
+			target4()
+		end
+end	
+
+function Sell_junk()
+	target4()
+	windower.chat.input('//sellnpc junk')
+	coroutine.sleep(2)
+	
+	windower.send_command('setkey enter down')
+	coroutine.sleep(0.3)
+	windower.send_command('setkey enter up')
+	coroutine.sleep(1)
+	
+	windower.send_command('setkey down down')
+	coroutine.sleep(0.1)
+	windower.send_command('setkey down up')
+	coroutine.sleep(1)
+	
+	windower.send_command('setkey enter down')
+	coroutine.sleep(0.3)
+	windower.send_command('setkey enter up')
+	coroutine.sleep(1)
+	
+	windower.send_command('setkey enter down')
+	coroutine.sleep(0.3)
+	windower.send_command('setkey enter up')
+	coroutine.sleep(2)
+	
+	windower.send_command('setkey escape down')
+	coroutine.sleep(0.3)
+	windower.send_command('setkey escape up')
+	coroutine.sleep(1)
+	
+	windower.send_command('setkey escape down')
+	coroutine.sleep(0.3)
+	windower.send_command('setkey escape up')
+	running = false
+	
+	running = false
+	
+	
+end
+
 
 windower.register_event('addon command', furrow_command)
