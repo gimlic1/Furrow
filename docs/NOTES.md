@@ -3,12 +3,12 @@
 > [!NOTE]
 > **Quick Reference**
 > - **Path:** `C:\Windower\addons\Furrow\`
-> - **Author / Version:** Algar (forked/modified by Kevin `gimlic1`) / `1.3`
+> - **Author / Version:** Algar (forked/modified by Gimlic `gimlic1`) / `1.3`
 > - **Commands:** `//furrow`
 > - **Load Status:** On-Demand
 > - **Origin:** Custom / Modified (`https://github.com/gimlic1/Furrow.git`, branch `master`, with uncommitted local changes)
 
-Mog Garden automation script that plants Revival Roots, harvests unlocked Garden Furrows on a 1-hour loop, and (via Kevin's local edits) sells junk to the Green Thumb Moogle.
+Mog Garden automation script that plants Revival Roots, harvests unlocked Garden Furrows on a 1-hour loop, and (via Gimlic's local edits) sells junk to the Green Thumb Moogle.
 
 ## What the Code Does
 `Furrow.lua` automates Mog Garden chores using `TAB` target cycling, `/item "Revival Root" <t>`, and `setkey` (`enter`/`down`/`escape`) menu navigation with `coroutine.sleep` delays:
@@ -31,7 +31,7 @@ Mog Garden automation script that plants Revival Roots, harvests unlocked Garden
 - **Dependencies / Libraries:** `logger`, `coroutine`; `Sell_junk()` invokes `//sellnpc junk` (SellNPC addon)
 
 ## Local Settings & Customizations
-Kevin's fork (`gimlic1/Furrow`) plus uncommitted working-tree edits in `Furrow.lua`:
+Gimlic's fork (`gimlic1/Furrow`) plus uncommitted working-tree edits in `Furrow.lua`:
 1. **`Check_KI()` (committed in fork):** Scans `windower.ffxi.get_key_items()` for key item IDs `2413` (2nd furrow) and `2415` (3rd furrow) to set `Furrows_unlocked` (`1`, `2`, or `3`) automatically, plus `//furrow ki`.
 2. **`target4()` & `Sell_junk()` (uncommitted):**
    - `target4()` cycles `TAB` until `"Green Thumb Moogle"` is targeted.
